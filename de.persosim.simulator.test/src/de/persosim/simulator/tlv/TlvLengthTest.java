@@ -334,4 +334,52 @@ public class TlvLengthTest {
 		assertFalse(lengthFieldExpected1.equals(lengthFieldExpected2));
 	}
 	
+	/**
+	 * Positive test case: set length for all valid 1 byte length BER encodings.
+	 */
+	@Test
+	public void testSetLengthByteArrayIntInt_1ByteLengthBer() {
+		TlvLength tlvLength = new TlvLength(new byte[] {(byte) 0x01});
+		
+		for(byte i=0; (i<128)&&(i>=0); i++) {
+			assertTrue(tlvLength.setLengthField(new byte[] {i}, 0, 1));
+		}
+	}
+	
+	/**
+	 * Negative test case: set length for all invalid 1 byte length BER encodings.
+	 */
+	@Test
+	public void testSetLengthByteArrayIntInt_1ByteLengthNonBer() {
+		TlvLength tlvLength = new TlvLength(new byte[] {(byte) 0x01});
+		boolean thrown;
+		
+		for(byte i=-128; i<0; i++) {
+			thrown = false;
+			
+			try {
+				tlvLength.setLengthField(new byte[] {i}, 0, 1);
+			} catch (ISO7816Exception e) {
+				thrown = true;
+			}
+			
+			assertTrue(thrown);
+		}
+	}
+	
+	/**
+	 * Positive test case: set length for all valid 2 byte length BER encodings.
+	 */
+	@Test
+	public void testSetLengthByteArrayIntInt_2ByteLengthBer() {
+		TlvLength tlvLength = new TlvLength(new byte[] {(byte) 0x01});
+		
+		for(byte i=0; (i<128)&&(i>=0); i++) {
+			assertTrue(tlvLength.setLengthField(new byte[] {(byte) 0x81, i}, 0, 2));
+		}
+		for(byte i=-128; i<0; i++) {
+			assertTrue(tlvLength.setLengthField(new byte[] {(byte) 0x81, i}, 0, 2));
+		}
+	}
+	
 }
