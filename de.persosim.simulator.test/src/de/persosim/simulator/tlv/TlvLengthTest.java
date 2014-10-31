@@ -188,11 +188,9 @@ public class TlvLengthTest {
 	@Test
 	public void testIsValidBerEncoding_2ByteLengthBer() {
 		for(byte i=0; (i<128)&&(i>=0); i++) {
-//			System.out.println("i: " + i + " - " + HexString.encode(i));
 			assertTrue((new TlvLength(new byte[] {(byte) 0x81, i}, false)).isValidBerEncoding());
 		}
 		for(byte i=-128; i<0; i++) {
-//			System.out.println("i: " + i + " - " + HexString.encode(i));
 			assertTrue((new TlvLength(new byte[] {(byte) 0x81, i}, false)).isValidBerEncoding());
 		}
 	}
@@ -203,7 +201,6 @@ public class TlvLengthTest {
 	@Test
 	public void testIsValidBerEncoding_1ByteLengthBer() {
 		for(byte i=0; (i<128)&&(i>=0); i++) {
-//			System.out.println("i: " + i + " - " + HexString.encode(i));
 			assertTrue((new TlvLength(new byte[] {i}, false)).isValidBerEncoding());
 		}
 	}
@@ -214,7 +211,6 @@ public class TlvLengthTest {
 	@Test
 	public void testIsValidBerEncoding_1ByteLengthNonBer() {
 		for(byte i=-128; i<0; i++) {
-//			System.out.println("i: " + i + " - " + HexString.encode(i));
 			assertFalse((new TlvLength(new byte[] {i}, false)).isValidBerEncoding());
 		}
 	}
@@ -254,7 +250,6 @@ public class TlvLengthTest {
 	@Test
 	public void testIsValidDerEncoding_1ByteLengthDer() {
 		for(byte i=0; (i<128)&&(i>=0); i++) {
-//			System.out.println("i: " + i + " - " + HexString.encode(i));
 			assertTrue((new TlvLength(new byte[] {i}, false)).isValidDerEncoding());
 		}
 	}
@@ -265,7 +260,6 @@ public class TlvLengthTest {
 	@Test
 	public void testIsValidDerEncoding_1ByteLengthNonBer() {
 		for(byte i=-128; i<0; i++) {
-//			System.out.println("i: " + i + " - " + HexString.encode(i));
 			assertFalse((new TlvLength(new byte[] {i}, false)).isValidDerEncoding());
 		}
 	}
@@ -276,7 +270,6 @@ public class TlvLengthTest {
 	@Test
 	public void testIsValidDerEncoding_2ByteLengthBerNonDer() {
 		for(byte i=0; (i<128)&&(i>=0); i++) {
-//			System.out.println("i: " + i + " - " + HexString.encode(i));
 			assertFalse((new TlvLength(new byte[] {(byte) 0x81, i}, false)).isValidDerEncoding());
 		}
 	}
@@ -287,7 +280,6 @@ public class TlvLengthTest {
 	@Test
 	public void testIsValidDerEncoding_2ByteLengthDer() {
 		for(byte i=-128; i<0; i++) {
-//			System.out.println("i: " + i + " - " + HexString.encode(i));
 			assertTrue((new TlvLength(new byte[] {(byte) 0x81, i}, false)).isValidDerEncoding());
 		}
 	}
