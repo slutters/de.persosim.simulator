@@ -195,15 +195,23 @@ public class TlvLengthTest {
 	}
 	
 	/**
-	 * Positive test case: Check a BER 1-byte length for BER validity
+	 * Positive test case: Check all BER 1-byte length encodings for BER validity
 	 */
 	@Test
-	public void testIsValidBerEncoding_1ByteLengthBerNonDer() {
-		/* set arbitrary but valid 1-byte length */
-		byte[] lengthExpected = new byte[] { (byte) 0x7E };
-
-		TlvLength lengthExtracted = new TlvLength(lengthExpected);
-		assertTrue(lengthExtracted.isValidBerEncoding());
+	public void testIsValidBerEncoding_1ByteLengthBer() {
+		for(byte i=0; i<127; i++) {
+			assertTrue((new TlvLength(new byte[] {i}, false)).isValidBerEncoding());
+		}
+	}
+	
+	/**
+	 * Positive test case: Check all non-BER 1-byte length encodings for BER validity
+	 */
+	@Test
+	public void testIsValidBerEncoding_1ByteLengthNonBer() {
+		for(byte i=-128; i<0; i++) {
+			assertFalse((new TlvLength(new byte[] {i}, false)).isValidBerEncoding());
+		}
 	}
 	
 	/**
