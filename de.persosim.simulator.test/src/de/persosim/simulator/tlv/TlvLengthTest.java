@@ -183,15 +183,18 @@ public class TlvLengthTest {
 	}
 	
 	/**
-	 * Positive test case: Whether encoding is BER compliant
+	 * Positive test case: Check all BER 2-byte length encodings for BER validity
 	 */
 	@Test
-	public void testIsValidBerEncoding_2ByteLengthBerNonDer() {
-		/* set arbitrary but valid 5-byte length */
-		byte[] lengthExpected = new byte[] { (byte) 0x81, (byte) 0x01 };
-
-		TlvLength lengthExtracted = new TlvLength(lengthExpected);
-		assertTrue(lengthExtracted.isValidBerEncoding());
+	public void testIsValidBerEncoding_2ByteLengthBer() {
+		for(byte i=0; (i<128)&&(i>=0); i++) {
+//			System.out.println("i: " + i + " - " + HexString.encode(i));
+			assertTrue((new TlvLength(new byte[] {(byte) 0x81, i}, false)).isValidBerEncoding());
+		}
+		for(byte i=-128; i<0; i++) {
+//			System.out.println("i: " + i + " - " + HexString.encode(i));
+			assertTrue((new TlvLength(new byte[] {(byte) 0x81, i}, false)).isValidBerEncoding());
+		}
 	}
 	
 	/**
@@ -199,7 +202,8 @@ public class TlvLengthTest {
 	 */
 	@Test
 	public void testIsValidBerEncoding_1ByteLengthBer() {
-		for(byte i=0; i<127; i++) {
+		for(byte i=0; (i<128)&&(i>=0); i++) {
+//			System.out.println("i: " + i + " - " + HexString.encode(i));
 			assertTrue((new TlvLength(new byte[] {i}, false)).isValidBerEncoding());
 		}
 	}
@@ -210,6 +214,7 @@ public class TlvLengthTest {
 	@Test
 	public void testIsValidBerEncoding_1ByteLengthNonBer() {
 		for(byte i=-128; i<0; i++) {
+//			System.out.println("i: " + i + " - " + HexString.encode(i));
 			assertFalse((new TlvLength(new byte[] {i}, false)).isValidBerEncoding());
 		}
 	}
@@ -259,6 +264,28 @@ public class TlvLengthTest {
 
 		TlvLength lengthExtracted = new TlvLength(lengthExpected);
 		assertTrue(lengthExtracted.isValidDerEncoding());
+	}
+	
+	/**
+	 * Positive test case: Check all DER 2-byte length encodings for DER validity
+	 */
+	@Test
+	public void testIsValidBerEncoding_2ByteLengthDer() {
+		for(byte i=-128; i<0; i++) {
+//			System.out.println("i: " + i + " - " + HexString.encode(i));
+			assertTrue((new TlvLength(new byte[] {(byte) 0x81, i}, false)).isValidDerEncoding());
+		}
+	}
+	
+	/**
+	 * Positive test case: Check all BER but non-DER 2-byte length encodings for DER validity
+	 */
+	@Test
+	public void testIsValidBerEncoding_2ByteLengthBerNonDer() {
+		for(byte i=0; (i<128)&&(i>=0); i++) {
+//			System.out.println("i: " + i + " - " + HexString.encode(i));
+			assertFalse((new TlvLength(new byte[] {(byte) 0x81, i}, false)).isValidDerEncoding());
+		}
 	}
 	
 	/**
