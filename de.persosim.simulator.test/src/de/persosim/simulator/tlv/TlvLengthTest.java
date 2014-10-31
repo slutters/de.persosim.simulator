@@ -230,15 +230,23 @@ public class TlvLengthTest {
 	}
 	
 	/**
-	 * Positive test case: Check DER encoded 1-byte length for DER validity
+	 * Positive test case: Check all DER encoded 1-byte length encodings for DER validity
 	 */
 	@Test
 	public void testIsValidDerEncoding_1ByteLengthDer() {
-		/* set arbitrary but valid 1-byte DER encoded length */
-		byte[] lengthExpected = new byte[] { (byte) 0x7E };
-
-		TlvLength lengthExtracted = new TlvLength(lengthExpected);
-		assertTrue(lengthExtracted.isValidDerEncoding());
+		for(byte i=0; i<127; i++) {
+			assertTrue((new TlvLength(new byte[] {i}, false)).isValidDerEncoding());
+		}
+	}
+	
+	/**
+	 * Positive test case: Check all non-DER 1-byte length encodings for DER validity
+	 */
+	@Test
+	public void testIsValidDerEncoding_1ByteLengthNonDer() {
+		for(byte i=-128; i<0; i++) {
+			assertFalse((new TlvLength(new byte[] {i}, false)).isValidDerEncoding());
+		}
 	}
 	
 	/**
