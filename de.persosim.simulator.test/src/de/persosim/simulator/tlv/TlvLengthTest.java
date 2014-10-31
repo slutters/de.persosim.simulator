@@ -2,7 +2,9 @@ package de.persosim.simulator.tlv;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -184,26 +186,24 @@ public class TlvLengthTest {
 	 * Positive test case: Whether encoding is BER compliant
 	 */
 	@Test
-	public void testIsValidBerEncoding_NonDer() {
+	public void testIsValidBerEncoding_2ByteLengthBerNonDer() {
 		/* set arbitrary but valid 5-byte length */
 		byte[] lengthExpected = new byte[] { (byte) 0x81, (byte) 0x01 };
 
 		TlvLength lengthExtracted = new TlvLength(lengthExpected);
-		assertEquals("Equals BER encoding",
-				lengthExtracted.isValidBerEncoding(), true);
+		assertTrue(lengthExtracted.isValidBerEncoding());
 	}
 	
 	/**
-	 * Positive test case: Check a BER 5-byte length for BER validity
+	 * Positive test case: Check a BER 1-byte length for BER validity
 	 */
 	@Test
-	public void testIsValidBerEncoding() {
+	public void testIsValidBerEncoding_1ByteLengthBerNonDer() {
 		/* set arbitrary but valid 1-byte length */
 		byte[] lengthExpected = new byte[] { (byte) 0x7E };
 
 		TlvLength lengthExtracted = new TlvLength(lengthExpected);
-		assertEquals("Equals BER encoding",
-				lengthExtracted.isValidBerEncoding(), true);
+		assertTrue(lengthExtracted.isValidBerEncoding());
 	}
 	
 	/**
@@ -211,30 +211,51 @@ public class TlvLengthTest {
 	 * validity
 	 */
 	@Test
-	public void testIsValidDerEncoding_BerNonDer() {
+	public void testIsValidDerEncoding_5ByteLengthBerNonDer() {
 		/* set arbitrary but valid 5-byte BER but non-DER length */
 		byte[] lengthExpected = new byte[] { (byte) 0x84, (byte) 0x00,
 				(byte) 0x00, (byte) 0x00, (byte) 0x01 };
 
 		TlvLength lengthExtracted = new TlvLength(lengthExpected);
 
-		assertEquals("Equals DER encoding",
-				lengthExtracted.isValidDerEncoding(), false);
+		assertFalse(lengthExtracted.isValidDerEncoding());
 	}
 	
 	/**
 	 * Positive test case: Check DER encoded 1-byte length for DER validity
 	 */
 	@Test
-	public void testIsValidDerEncoding() {
+	public void testIsValidDerEncoding_1ByteLengthDer() {
 		/* set arbitrary but valid 1-byte DER encoded length */
 		byte[] lengthExpected = new byte[] { (byte) 0x7E };
 
 		TlvLength lengthExtracted = new TlvLength(lengthExpected);
-		assertEquals("Equals DER encoding",
-				lengthExtracted.isValidDerEncoding(), true);
+		assertTrue(lengthExtracted.isValidDerEncoding());
 	}
-	//TODO missing testcase tesIsValidDerEncoding_2ByteLength
+	
+	/**
+	 * Positive test case: Check DER encoded 2-byte length for DER validity
+	 */
+	@Test
+	public void testIsValidDerEncoding_2ByteLengthDer() {
+		/* set arbitrary but valid 2-byte length */
+		byte[] lengthExpected = new byte[] { (byte) 0x81, (byte) 0x88 };
+
+		TlvLength lengthExtracted = new TlvLength(lengthExpected);
+		assertTrue(lengthExtracted.isValidDerEncoding());
+	}
+	
+	/**
+	 * Positive test case: Check non-DER but BER encoded 2-byte length for DER validity
+	 */
+	@Test
+	public void testIsValidDerEncoding_2ByteLengthBerNonDer() {
+		/* set arbitrary but valid 2-byte length */
+		byte[] lengthExpected = new byte[] { (byte) 0x81, (byte) 0x01 };
+
+		TlvLength lengthExtracted = new TlvLength(lengthExpected);
+		assertFalse(lengthExtracted.isValidDerEncoding());
+	}
 	
 	/**
 	 * Positive test case: check equals for same object and same constructor
@@ -283,7 +304,7 @@ public class TlvLengthTest {
 		TlvLength lengthFieldExpected1 = new TlvLength(lengthExpected1);
 		TlvLength lengthFieldExpected2 = new TlvLength(lengthExpected2);
 
-		assertEquals(lengthFieldExpected1.equals(lengthFieldExpected2), false);
+		assertFalse(lengthFieldExpected1.equals(lengthFieldExpected2));
 	}
 	
 }
